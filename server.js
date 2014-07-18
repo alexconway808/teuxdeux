@@ -27,23 +27,31 @@ server.use(restify.queryParser());
 server.use(restify.bodyParser());
 
 
-server.get(/.*/, function (req, res) {
-  
-  var body = "Hello World";
+server.get("/", function (req, res) {
   
   //Display the Tasks in the browser at localhost: 1337
-  Task.find(function (err, Tasks){
-    for (i in Tasks){
-      body += Tasks[i].task_data + '<br>';
-    }
-    res.writeHead(200, {
-      'Content-Length': Buffer.byteLength(body),
-      'Content-Type' : 'text/html'
-    });
+  // Task.find(function (err, Tasks){
+  //   for (i in Tasks){
+  //     body += Tasks[i].task_data + '<br>';
+  //   }
+  //   res.writeHead(200, {
+  //     'Content-Length': Buffer.byteLength(body),
+  //     'Content-Type' : 'text/html'
+  //   });
 
-    res.write(body);
-    res.send();
+  //   res.write(body);
+  //   res.send();
+  // });
+  var options = {};
+  var html = jade.renderFile('./templates/index.jade', options);
+
+  res.writeHead(200, {
+    'Content-Length': Buffer.byteLength(html),
+    'Content-Type': 'text/html'
   });
+  
+  res.write(html);
+  res.end();
 
 });
 
